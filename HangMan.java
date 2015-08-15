@@ -13,23 +13,24 @@ public class HangMan {
 		try{
 			@SuppressWarnings("resource")
 			Scanner file = new Scanner(new File(wordfile));
-			while(file.hasNext()){
+			//while(file.hasNext()){
 				String wordnext = file.nextLine();
 				words = wordnext.split("\\s+"); // remove whitespaces
-			}
+			//}
 		}catch(FileNotFoundException e) // this is the file not found exception handling
 		{
 			System.out.print("The file you have entered does not exist, please try again!");
 			System.exit(0); // exit program
 		}
 		String choice = words[(int) (Math.random() * words.length)]; // get a random word
+		System.out.println(choice);
 		String temp = choice; 
 		System.out.println(temp.replaceAll("[a-z]", "_ ")); // replace all alphabets with _
 		// declare rights and wrongs for keeping count
 		int wrongs = 0; 
 		int rights = 0;
 		// store words selected that are in choice
-		String [] wordspicked = new String [choice.length()];
+		Character [] wordspicked = new Character [choice.length()];
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);	
 
@@ -47,7 +48,7 @@ public class HangMan {
 			}
 			boolean [] pick = new boolean [choice.length()]; // this is used for getting selected index
 			// check if entered letter exist in choice and if it has not already been selected
-			if(choice.contains(l) && !Arrays.asList(wordspicked).contains(l)){ 
+			if(choice.contains(l) && !Arrays.asList(wordspicked).contains(t)){ 
 
 				// mark index of chosen words in this loop
 				for(int o = 0; o < choice.length(); o++){ 
@@ -59,10 +60,11 @@ public class HangMan {
 				// if the index in the bool array is true, store that index alphabet in array
 				for(int o = 0; o < choice.length(); o++){
 					if(pick[o] == true){
-						wordspicked[o] = l;
+						wordspicked[o] = t;
 						rights++; // increment rights.. 
 					}
 				}
+				System.out.println(Arrays.toString(wordspicked));
 			}else{
 
 				wrongs++; // if wrongs, increment wrongs
@@ -92,7 +94,7 @@ public class HangMan {
 			//print along as letters are entered
 			for(int i = 0; i < wordspicked.length; i++){
 				if(wordspicked[i] == null){
-					wordspicked[i] = "_";
+					wordspicked[i] = '_';
 				}
 			}
 			System.out.println(Arrays.toString(wordspicked).replaceAll("[\\[\\],]", ""));
