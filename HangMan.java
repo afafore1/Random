@@ -23,7 +23,6 @@ public class HangMan {
 			System.exit(0); // exit program
 		}
 		String choice = words[(int) (Math.random() * words.length)]; // get a random word
-		System.out.println(choice);
 		String temp = choice; 
 		System.out.println(temp.replaceAll("[a-z]", "_ ")); // replace all alphabets with _
 		// declare rights and wrongs for keeping count
@@ -64,7 +63,7 @@ public class HangMan {
 						rights++; // increment rights.. 
 					}
 				}
-				System.out.println(Arrays.toString(wordspicked));
+				
 			}else{
 
 				wrongs++; // if wrongs, increment wrongs
