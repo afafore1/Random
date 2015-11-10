@@ -63,7 +63,7 @@ public class BfsAList {
 				x++;
 			}
 		}
-		System.out.println("Traversed vertices---"+nodes);
+		System.out.println("vertices---"+nodes);
 		
 	}
 	/*
