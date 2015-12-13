@@ -1,7 +1,10 @@
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 /*
 		 *  0 --- 1-------5----6--8
 		 *  | \    \      |   /  /
@@ -66,30 +69,47 @@ public class BFSTraverse {
 	void bfs(int adjacency_matrix[][], int source){
 		int numNodes = adjacency_matrix[source].length - 1;
 		boolean [] visited = new boolean[numNodes + 1];
-		int i, element;
+		int element;
+		HashMap<Integer, Integer> colors = new HashMap<>();
 		visited[source] = true; // set source vertex/node as visited so we start from it
 		queue.add(source); // add source to the queue
-		
-		while(!queue.isEmpty()){ // while the queue is not empty... remember queue is FIFO (first in first out)
+		colors.put(source, 0); // assign color 0
+		while(!queue.isEmpty()){ 
 			element = queue.remove(); // remove head node.. this is parent
-			i = element; // set i to the head
-			System.out.print(i + "\t");			
-			
-			/*
-			 *loop through all nodes from i
-			 *and check if there is a path to
-			 *head, if there exist a path and that node is not visited
-			 *mark it as visited and increment i
-			 */
-			while(i <= numNodes){
+			for(int i = 0; i < numNodes; i++){
+				if(adjacency_matrix[element][i] == 1 && Objects.equals(colors.get(i), colors.get(element))){ // same set with different number
+					System.out.println("not bipartite here "+i+" and "+element); // this will give duplicate.. use set
+				}
 				if(adjacency_matrix[element][i] == 1 && visited[i] == false){
 					queue.add(i); // child
 					visited[i] = true;
+					colors.put(i, 1 - colors.get(element)); // this will make it alternate
 				}
-				i++;
 				
 			}
 			
+		}
+		System.out.println();
+	}
+	
+	void dfs(int adjacency_matrix[][], int source){
+		Stack<Integer> stack = new Stack<>();
+		int numNodes = adjacency_matrix[source].length -1;
+		boolean [] visited = new boolean[numNodes +1];
+		visited[source] = true;
+		stack.add(source);
+		while(!stack.isEmpty()){
+			int current = stack.peek(); // don't remove the element but get it
+			System.out.println("Current node being visited is "+current);
+			for(int x = 0; x <= numNodes; x++){
+				if(adjacency_matrix[current][x] == 1 && visited[x] == false){
+					visited[x] = true;
+					stack.push(x);
+					break;
+				}else if(x == numNodes){
+					stack.pop();
+				}
+			}
 		}
 	}
 	public static void main(String[] args) {
@@ -113,6 +133,7 @@ public class BFSTraverse {
 			System.out.println("BFS traversal of graph is ");
 			BFSTraverse bfst = new BFSTraverse();
 			bfst.bfs(adjacency_matrix, source);
+			bfst.dfs(adjacency_matrix, source);
 		}catch (InputMismatchException e){
 			System.out.println("Wrong input format");
 		}

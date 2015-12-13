@@ -1,9 +1,10 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 public class Bfs {
-	int numV; // number of vertices
-	boolean [][] G; // graph as adjacency matrix.... PS: should make implementation using adjacency list
+	static int numV; // number of vertices
+	static boolean [][] G; // graph as adjacency matrix.... PS: should make implementation using adjacency list
 	String graph = "0---1-------5---6\n|\\    \\     |  /\n| \\    \\    | /\n2  3----4---7"; // representation of the graph
 	
 	void graphSetup(){
@@ -26,18 +27,22 @@ public class Bfs {
 			  ------------------
 		 */
 		System.out.println(graph);
-		numV = 8;
 		G = new boolean [numV][numV]; // this is actually a waste of space 
-		G[0][1] = G[1][0] = true;
-		G[0][2] = G[2][0] = true;
-		G[0][3] = G[3][0] = true;
-		G[1][4] = G[4][1] = true;
-		G[1][5] = G[5][1] = true;
-		G[3][4] = G[4][3] = true;
-		G[4][7] = G[7][4] = true;
-		G[5][7] = G[7][5] = true;
-		G[5][6] = G[6][5] = true;
-		G[6][7] = G[7][6] = true;
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j < 4; j++){
+				G[i][j] = true;
+			}
+		}
+//		G[0][1] = G[1][0] = true;
+//		G[0][2] = G[2][0] = true;
+//		G[0][3] = G[3][0] = true;
+//		G[1][4] = G[4][1] = true;
+//		G[1][5] = G[5][1] = true;
+//		G[3][4] = G[4][3] = true;
+//		G[4][7] = G[7][4] = true;
+//		G[5][7] = G[7][5] = true;
+//		G[5][6] = G[6][5] = true;
+//		G[6][7] = G[7][6] = true;
 		
 		
 	}
@@ -95,7 +100,11 @@ public class Bfs {
 		System.out.println();
 	}
 	public static void main(String [] args){
-		new Bfs();
+		numV = 4;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter matrix");
+		
+		//new Bfs();
 	}
 
 }

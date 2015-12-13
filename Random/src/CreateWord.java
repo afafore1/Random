@@ -48,6 +48,12 @@ public class CreateWord {
 			 System.out.println("nah");;
 		}
 
+		LinkedList list = new LinkedList();
+		list.add(1);
+		list.add(2);
+		list.add("what");
+		list.add(0.3);
+		System.out.println(list.toString());
 	}
 
 }
