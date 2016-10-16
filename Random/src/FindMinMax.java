@@ -1,7 +1,9 @@
 
-public class Euler1 {
+public class FindMinMax {
 
 	public static void main(String[] args) {
 		
+
 	}
+
 }

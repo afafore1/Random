@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class constantQuery {
 	static int n = 8;
 	static int [][] values = new int[n][n];
@@ -15,7 +13,7 @@ public class constantQuery {
 	}
 	
 	public static int query(int x1, int y1, int x2, int y2){
-		return sum[x1][y1] + sum[x2][y2];
+		return sum[x2][y2];
 	}
 
 	public static void main(String[] args) {
@@ -38,9 +36,6 @@ public class constantQuery {
 				System.out.print(values[i][j]+" ");
 			}
 			System.out.println();
-		}
-		
-
+		}	
 	}
-
 }

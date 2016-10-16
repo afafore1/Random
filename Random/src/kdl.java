@@ -22,7 +22,14 @@ public class kdl {
 				System.out.println("this poped "+poped);
 			}
 		}
+		char ch = 'c';
+		int pos = ch - 'a' + 1;
+		System.out.println(pos);
 		
+		int n = 4;
+		int rem = n % 26;
+		char l = (char)((int)'A' + rem);
+		System.out.println(l);
 
 	}
 

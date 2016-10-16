@@ -10,9 +10,9 @@ public class Bipartite {
 			colorArr[i] = -1;
 		}
 		colorArr[source] = 1; // assign 1 to first color
-		LinkedList<Integer> q = new LinkedList<Integer>();
+		LinkedList<Integer> q = new LinkedList<Integer>(); // this could be done with a queue too
 		q.add(source); // add source to list
-		while(q.size() != 0){ // continue while the queue is not empty
+		while(q.size() != 0){ // continue while the list is not empty
 			int top = q.poll(); // dequeue head vertex from queue
 			for(int j = 0; j < V; ++j){
 				if(G[top][j] == 1 && colorArr[j] == -1){

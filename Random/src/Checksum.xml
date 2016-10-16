@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://localhost:8080/" href="Checksum.jnlp">
+
+	<information>
+		<title>Checksum App</title>
+		<vendor>Ayomi</vendor>
+		<homepage href="http://localhost:8080/" />
+		<description>Application used to calculate checksum</description>
+	</information>
+
+	<security>
+		<all-permissions/>
+	</security>
+
+	<resources>
+		<j2se version="1.6+" />
+		<jar href="Checksum.jar" />
+	</resources>
+
+	<application-desc main-class="main.ayo.Checksum" />
+</jnlp>

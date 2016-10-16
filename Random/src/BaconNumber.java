@@ -9,26 +9,51 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class BfsAList {
+public class BaconNumber {
 
 	private Map<Integer, List<Integer>> _adjacencyList;
+	private Map<Integer, String> _movies; // will store neighbors here
 	private Queue<Integer> queue;
-	private int [] parent;
 	private int [] visited;
 	private LinkedHashMap<Integer, Integer> set = new LinkedHashMap<Integer, Integer>();
 
-	public BfsAList(int V){// v here is number of vertices
+	public BaconNumber(int V){// v here is number of vertices
 		_adjacencyList = new HashMap<Integer, List<Integer>>();
+		_movies = new HashMap<Integer, String>();
 		queue = new LinkedList<Integer>();
-		parent = new int [V];
 		visited = new int[V];
 		for(int i = 0; i < V; i++){
 			_adjacencyList.put(i, new LinkedList<Integer>());// add a linkedlist for each vertex
-			parent[i] = 0;
 			visited[i] = -1;
 		}
 	}
+	
+	private void fillNeighbors(){
+		//0 = A, 1 = B, 2 = C, 3 = D, 4 = E
+		_movies.put(0, "Z Movie 0 | B Movie 1 Movie 2 Movie 7 | C Movie 1 Movie 7 | D Movie 2 Movie 7 | E Movie 2");
+		_movies.put(1, "A Movie 1 Movie 2 Movie 7 | C Movie 1 Movie 7 | D Movie 2 Movie 7 | E Movie 2");
+		_movies.put(2, "A Movie 1 Movie 7 | B Movie 1 Movie 7 | D Movie 7");
+		_movies.put(3, "E Movie 2 | A Movie 2 Movie 7 | B Movie 2 Movie 7 | C Movie 7");
+		_movies.put(4, "D Movie 2 | A Movie 2 | B Movie 2 | F Movie 3 | G Movie 3");
+	}
 
+	public String getMovies(int s, int v){
+		String result = "";
+		// just getting corresponding character
+		int rem = v % 26;
+		char l = (char)((int)'A' + rem);
+		//System.out.println("this is char "+l);
+		String movie = _movies.get(s);
+		String [] tokens = movie.split("\\|");
+		for(int i = 0; i < tokens.length; i++){
+			String next = tokens[i];
+			if(next.contains(String.valueOf(l))){
+				result = next;
+				break;
+			}
+		}
+		return result;
+	}
 	public void setEdge(int source, int dest){ // adds edge between vertices
 		if(source > _adjacencyList.size() || dest > _adjacencyList.size()){
 			System.out.println("Vertex not present");
@@ -49,16 +74,15 @@ public class BfsAList {
 	}
 
 
-
-	void bfs(int source){
+	String query(int source, int dest){
 		List<Integer> nodes = new LinkedList<Integer>();
 		int i, element;
 		visited[source] = source;
 		queue.add(source);
 		while(!queue.isEmpty()){
-			element = queue.remove(); // remove first which will be source
-			System.out.println(element +" removed");
+			element = queue.remove();
 			i = element;
+			if(i == dest) break; // we stop as soon as we reach destination
 			nodes.add(element);
 			List<Integer> iList = getEdge(i);
 			System.out.println(i+" -> "+iList);
@@ -72,109 +96,27 @@ public class BfsAList {
 				x++;
 			}
 		}
-		System.out.println(Arrays.toString(visited));
-		//System.out.println("vertices---"+nodes);
-	}
-	
-	ArrayList<Integer> SP(int source, int dest){
-		ArrayList<Integer> result = new ArrayList<>();
-		if(source == dest){
-			result.add(source);
-			result.add(dest);
-			return result;
-		}
-		for(int i = dest; i >= 0; i = visited[i]){
-			if(i == source) break;
-			if(visited[i] != -1){
-				result.add(i);
-				result.add(visited[i]);
+		String result = "";
+		for(int x = dest; x >= 0; x= visited[x]){
+			if(x == source) break; // we are done
+			if(visited[x] != -1){
+				result += getMovies(x,visited[x]); // get predecessor of x movies from x
 			}
 		}
+		
 		return result;
 	}
 
-	// has this node been visited at all ?
-	public int hasPath(int v){
-		return visited[v];
-	}
-
-	// is there a path from this source to this destination?
-	public boolean hasPathFrom(int s, int v){
-		if(getEdge(s).contains(v))return true;
-		return false;
-	}
-
-	public double distTo(int v){
-		return parent[v];
-	}
-
-	public void shortestPath(int v, int e){
-		if(e == v){
-			System.out.println(v+"-->"+v);
-			System.exit(0);
-		}
-		for(int i = e; i > 0; i= visited[i]){
-			if(i == v)break;
-			if(visited[i] != -1){
-				set.put(i, visited[i]);
-			}
-		}
-		String dset = set.toString().replace("}", "").replace("{", "");
-		dset = new StringBuilder(dset).reverse().toString().replaceAll("=", "-->");
-		System.out.println(dset);
-	}
-
-	//[0, 1, 1, 1, 2, 2, 3, 3, 4, 4]
-	//[0, 1, 5, 6, 7]
-
-	/*0 -> [1, 2, 3]
-			1 removed
-			1 -> [0, 5, 4]
-			2 removed
-			2 -> [0]
-			3 removed
-			3 -> [0, 4]
-			5 removed
-			5 -> [1, 6, 7]
-			4 removed
-			4 -> [1, 3, 7]
-			6 removed
-			6 -> [5, 7, 8]
-			7 removed
-			7 -> [4, 5, 6, 9]
-	/*
-	 * 
-0 1
-1 2
-2 3
-3 0
+/*
+Enter number of vertices and edges in this graph
+5 2
+Enter edges in graph.. i.e. <source> 1 <destination> 2
 0 2
-
-test with this
-
-  			0 --- 1-------5----6--8
-		    | \    \      |   /  /
-			|  \    \     |  /  /
-			|   \    \    | /  /
-			2    3----4---7---9
-
-			V = 10, E = 13
-0 1
-0 2
-0 3
-1 5
-1 4
-3 4
-4 7
-5 6
-5 7
-6 7
-6 8
-7 9
-8 9
-
-
-	 */
+0 4
+Enter source and destination vertex: 
+2 4
+ * 
+ */
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -190,26 +132,28 @@ test with this
 			System.out.println("Enter number of vertices and edges in this graph");
 			V = sc.nextInt();
 			E = sc.nextInt();
-			BfsAList gList = new BfsAList(V);
+			BaconNumber bn = new BaconNumber(V);
+			
 
 			// get edge in graph
 			System.out.println("Enter edges in graph.. i.e. <source> 1 <destination> 2");
 			while(count < E){
 				source = sc.nextInt();
 				dest = sc.nextInt();
-				gList.setEdge(source, dest);
+				bn.setEdge(source, dest);
 				count++;
 			}
+			bn.fillNeighbors(); // fill the neighbors here
 			System.out.println("Enter source and destination vertex: ");
 			start = sc.nextInt();
 			destination = sc.nextInt();
-			gList.bfs(start);
-			gList.shortestPath(start, destination);
+			System.out.println(bn.query(start, destination));
 		}catch(InputMismatchException e){
 			System.out.println("Error in input format");
 		}
 		sc.close();
 
 	}
+
 
 }
